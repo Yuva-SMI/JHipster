@@ -1,5 +1,5 @@
 entity CustomerDetails {
-	id Integer,
+	id Integer required,
 	firstName String,
 	lastName String,
     gender String,
@@ -13,24 +13,24 @@ entity CustomerDetails {
 }
 
 entity CustomerFeedback {
-	id Integer,
+	id Integer required,
     rating Integer,
 	comments String
 }
 
 entity GrievanceDetails {
-	id Integer,
-    grivId Integer,
+	id Integer required,
+    grivId Integer required,
     aadharNo Integer,
     panNo String,
-    claimDeptId String,
+    claimDeptId String required,
     claimAmount Double,
     claimDesc String,
     claimDocs Blob
 }
 
 entity GrievanceDept {
-	deptId Integer,
+	deptId Integer required,
 	deptName String,
 	email String,
 	phone Integer,
@@ -39,7 +39,7 @@ entity GrievanceDept {
 }
 
 entity GrievanceStatus {
-	grivId Integer,
+	grivId Integer required,
     status String,
     comments String
 }
@@ -51,7 +51,7 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-	GrievanceDetails{grivId} to CustomerDetails
+	CustomerDetails to GrievanceDetails{grivId}
 }
 
 

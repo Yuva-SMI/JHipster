@@ -1,0 +1,190 @@
+
+
+/*
+ * This is a microservice Customer To Grievance sample with Gateway and three microservice applications
+ * This uses JHipster registry for service discovery and JWT authentication
+ */
+ 
+ /** 
+  * Application configuration section
+  */
+/** 
+ * Deployment configuration section
+ */
+ 
+application {
+  config {
+    baseName gateway,
+    applicationType gateway,
+    packageName com.smi.training.gateway,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    cacheProvider no,
+    buildTool maven,
+    skipClient true
+  }
+  entities *
+}
+
+application {
+  config {
+    baseName customer,
+    applicationType microservice,
+    packageName com.smi.training.customer,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    cacheProvider no,
+    buildTool maven,
+    serverPort 8071,
+    skipUserManagement true,
+    skipClient true
+  }
+  entities CustomerLogin, CustomerDetails, CustomerGrievance, CustomerFeedback, Department
+}
+
+
+application {
+  config {
+    baseName grievance,
+    applicationType microservice,
+    packageName com.smi.training.grievance,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+    cacheProvider no,
+    buildTool maven,
+    serverPort 8072,
+    skipUserManagement true,
+    skipClient true
+  }
+  entities GrievanceStatus, Reminder
+}
+
+application {
+  config {
+    baseName notification,
+    applicationType microservice,
+    packageName com.smi.training.notification,
+    serviceDiscoveryType eureka,
+    authenticationType jwt,
+    databaseType mongodb,
+    prodDatabaseType mongodb,
+    devDatabaseType mongodb,
+    cacheProvider no,
+    enableHibernateCache false,
+    buildTool maven,
+    serverPort 8073,
+    skipUserManagement true,
+    skipClient true
+  }
+  entities Notification
+}
+
+/* Entities for Store Gateway */
+
+entity CustomerLogin {
+	id String required
+	userName String required
+    password String required
+    email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    phone String required
+    aadhar String required
+}
+
+entity CustomerDetails {
+    firstName String required
+    lastName String required
+    gender Gender required
+    addressLine1 String required
+    addressLine2 String
+    city String required
+    state String required
+    country String required
+}
+
+enum Gender {
+    MALE, FEMALE, OTHER
+}
+
+relationship OneToOne {
+    CustomerDetails{CustomerLogin(userId) required} to CustomerLogin
+}
+
+service CustomerLogin, CustomerDetails with serviceClass
+paginate CustomerDetails with pagination
+
+/** Grievance */
+entity Department {
+    name String required
+    description String
+}
+entity CustomerGrievance {
+    subject String required
+    message String
+    image ImageBlob
+}
+
+entity CustomerType {
+    name String required
+    description String
+}
+
+entity CustomerFeedback {
+    name String required
+    description String
+}
+
+relationship ManyToOne {
+	CustomerGrievance{Department(name) required} to Department
+}
+
+relationship OneToMany {
+   CustomerLogin{id} to CustomerGrievance{CustomerLogin(userId) required} ,
+   CustomerType{id} to CustomerGrievance{CustomerType(customerTypeId) required} ,
+   CustomerGrievance{id} to CustomerFeedback{CustomerGrievance(grievanceId)}
+}
+
+service Department, CustomerType, CustomerGrievance, CustomerFeedback with serviceClass
+paginate Department, CustomerGrievance, CustomerFeedback with pagination
+microservice CustomerLogin, Department, CustomerType, CustomerGrievance, CustomerFeedback with customer
+
+
+/* Entities for grievance microservice */
+
+
+
+entity GrievanceStatus {
+    name String required
+    description String
+    status String required
+}
+
+entity Reminder {
+    name String required
+    description String
+}
+
+relationship OneToMany {
+   CustomerGrievance{id} to GrievanceStatus{CustomerGrievance(grievanceId) required} ,
+   CustomerGrievance{id} to Reminder{CustomerGrievance(grievanceId) required} 
+}
+microservice GrievanceStatus,Reminder  with grievance
+
+/* Entities for notification microservice */
+
+entity Notification {
+    date Instant required
+    details String
+    sentDate Instant required
+    format NotificationType required
+    userId Long required
+    grienvanceId Long required
+}
+
+enum NotificationType {
+    EMAIL, SMS, PARCEL
+}
+
+microservice Notification with notification

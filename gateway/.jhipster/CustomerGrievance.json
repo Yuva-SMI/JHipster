@@ -1,0 +1,68 @@
+{
+    "name": "CustomerGrievance",
+    "fields": [
+        {
+            "fieldName": "subject",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "message",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "customerFeedback",
+            "otherEntityRelationshipName": "customerGrievance",
+            "relationshipName": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "department",
+            "otherEntityRelationshipName": "customerGrievance",
+            "relationshipValidateRules": "required",
+            "relationshipName": "department",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "customerLogin",
+            "otherEntityRelationshipName": "id",
+            "relationshipValidateRules": "required",
+            "relationshipName": "customerLogin",
+            "otherEntityField": "userId"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "customerType",
+            "otherEntityRelationshipName": "id",
+            "relationshipValidateRules": "required",
+            "relationshipName": "customerType",
+            "otherEntityField": "customerTypeId"
+        }
+    ],
+    "changelogDate": "20200514122400",
+    "entityTableName": "customer_grievance",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "gateway",
+        "customer"
+    ],
+    "microserviceName": "customer"
+}

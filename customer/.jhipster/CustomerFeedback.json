@@ -1,0 +1,40 @@
+{
+    "name": "CustomerFeedback",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "customerGrievance",
+            "otherEntityRelationshipName": "id",
+            "relationshipName": "customerGrievance",
+            "otherEntityField": "grievanceId"
+        }
+    ],
+    "changelogDate": "20200514122600",
+    "entityTableName": "customer_feedback",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "gateway",
+        "customer"
+    ],
+    "microserviceName": "customer"
+}

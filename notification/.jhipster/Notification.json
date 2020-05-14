@@ -35,7 +35,7 @@
             ]
         },
         {
-            "fieldName": "productId",
+            "fieldName": "grienvanceId",
             "fieldType": "Long",
             "fieldValidateRules": [
                 "required"
@@ -54,7 +54,7 @@
     "embedded": false,
     "clientRootFolder": "",
     "applications": [
-        "store",
+        "gateway",
         "notification"
     ],
     "microserviceName": "notification"

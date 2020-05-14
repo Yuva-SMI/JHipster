@@ -1,0 +1,38 @@
+{
+    "name": "CustomerType",
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "customerGrievance",
+            "otherEntityRelationshipName": "customerType",
+            "relationshipName": "id"
+        }
+    ],
+    "changelogDate": "20200514122500",
+    "entityTableName": "customer_type",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": [
+        "gateway"
+    ],
+    "microserviceName": "customer"
+}

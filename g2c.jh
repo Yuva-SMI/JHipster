@@ -51,7 +51,7 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-	GrievanceDetails{grivId} to CustomerDetails
+	CustomerDetails to GrievanceDetails{grivId}
 }
 
 

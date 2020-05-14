@@ -1,0 +1,73 @@
+entity CustomerDetails {
+	id Integer,
+	firstName String,
+	lastName String,
+    gender String,
+    address String,
+    pincode Integer,
+    country String,
+    state String,
+	email String,
+	phoneNumber String,
+	password String
+}
+
+entity CustomerFeedback {
+	id Integer,
+    rating Integer,
+	comments String
+}
+
+entity GrievanceDetails {
+	id Integer,
+    grivId Integer,
+    aadharNo Integer,
+    panNo String,
+    claimDeptId String,
+    claimAmount Double,
+    claimDesc String,
+    claimDocs Blob
+}
+
+entity GrievanceDept {
+	deptId Integer,
+	deptName String,
+	email String,
+	phone Integer,
+    pincode Integer,
+    state String
+}
+
+entity GrievanceStatus {
+	grivId Integer,
+    status String,
+    comments String
+}
+
+relationship OneToOne {
+	CustomerDetails{id} to CustomerFeedback,
+    GrievanceDetails{grivId} to GrievanceDept,
+    GrievanceDetails{grivId} to GrievanceStatus
+}
+
+relationship OneToMany {
+	GrievanceDetails{grivId} to CustomerDetails
+}
+
+
+relationship ManyToMany {
+	 GrievanceDept{claimDeptId} to GrievanceDetails{deptId}
+}
+
+// Set pagination options
+paginate CustomerDetails,CustomerFeedback with infinite-scroll
+paginate GrievanceDetails, GrievanceDept with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
